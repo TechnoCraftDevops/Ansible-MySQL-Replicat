@@ -1,0 +1,7 @@
+- name: reset MySQL slave process
+  mysql_replication:
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    mode: resetslave # <--- conflis de version avec stopslave & stopreplica
+  when: inventory_hostname == 'docker-host2' or inventory_hostname == 'docker-host3'

@@ -1,0 +1,16 @@
+---
+    - name: Install Python
+      apt:
+        name: python3-pip
+        state: latest
+
+    - name: Install pymysql
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Install Python3-PyMySql
+      apt:
+        name: 
+          - python3-pymysql # for mysql_db and mysql_user modules
+        state: present

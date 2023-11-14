@@ -1,0 +1,6 @@
+---
+    - name: inject mysqld.cnf replica vars_files
+      copy: src=mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host1'
+      notify:
+        - restart mysql

@@ -1,0 +1,22 @@
+- hosts: all
+  become: true
+  gather_facts: no
+  vars_files: vars/main.yml
+
+  roles:
+    - role: os_update_upgrade
+    - role: mysql8.0/mysql-8.0_python_dep_install
+    - role: mysql8.0/mysql-8.0_install_server
+    - role: mysql8.0/mysql-8.0_update_default_config
+    - role: mysql8.0/mysql-8.0_restart
+    - role: mysql8.0/mysql-8.0_manage_user
+    - role: mysql8.0/mysql-8.0_clean
+# TODO creat user 'root' with 
+  # handlers:
+  # - name: Restart mysql
+  #   service:
+  #     name: mysql
+  #     state: restarted
+  #   listen: "Restart mysql"
+  
+  # - include_tasks: roles/mysql_handlers/handlers.yml

@@ -1,0 +1,38 @@
+---
+    - name: Create MySQL client config for filling empty root password
+      copy:
+        dest: "/root/.my.cnf"
+        content: |
+          [client]
+          user="{{ mysql_root_user }}"
+          password="{{ mysql_root_password }}"
+
+    - name: "Create {{ mysql_user }} user with all privileges"
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_password }}"
+        host: "%"
+        priv: "*.*:ALL"
+        state: present
+        login_user: "{{ mysql_root_user }}"
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      when: inventory_hostname == 'docker-host1'
+
+    - name: "Create New {{ mysql_root_user }} user with all privileges"
+      mysql_user:
+        name: "{{ mysql_root_user }}"
+        password: "{{ mysql_root_password }}"
+        host: "%"
+        priv: "*.*:ALL,GRANT"
+        state: present
+        login_user: "{{ mysql_root_user }}"
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+    
+    - name: Reload privilege tables
+      mysql_query:
+        login_user: "{{ mysql_root_user }}"
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        query: FLUSH PRIVILEGES

@@ -1,0 +1,23 @@
+---
+    - name: Uninstall pymysql
+      pip:
+        name: pymysql
+        state: absent
+
+    - name: Uninstall MySql-8.0 & Python3-PyMySql
+      apt:
+        purge: True
+        name: 
+          - mysql-server
+          - python3-pymysql # for mysql_db and mysql_user modules
+        state: absent
+
+    - name: Uninstall Python
+      apt:
+        purge: True
+        name: python3-pip
+        state: absent
+
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes

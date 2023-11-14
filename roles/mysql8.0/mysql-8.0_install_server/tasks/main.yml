@@ -1,0 +1,6 @@
+---
+    - name: Install MySql-8.0
+      apt:
+        name: 
+          - mysql-server
+        state: present

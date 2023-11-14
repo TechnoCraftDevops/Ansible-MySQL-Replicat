@@ -1,0 +1,22 @@
+---
+    - name: Stop and start mysql service
+      block:
+        - name: Stop mysql
+          shell: service mysql stop
+
+        - name: Wait until the lock file is removed
+          wait_for:
+            path: /var/lock/subsys/mysql
+            state: absent
+
+        - name: Start mysql
+          shell: service mysql start
+      become: true
+    # NOT WORK WITH DOCKER B-CAUSE NETWORK AND PORT 
+    # - name: Wait for service to be ready
+    #   wait_for:
+    #     port: '3306'
+    #     host: '0.0.0.0'
+    #     # connect_timeout: 3
+    #     # delay: 3
+    #     # timeout: 30

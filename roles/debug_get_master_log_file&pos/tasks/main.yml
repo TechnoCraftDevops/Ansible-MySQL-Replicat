@@ -1,0 +1,27 @@
+---
+    - name: Get mysql info
+      mysql_info:
+        login_user: "{{ mysql_root_user }}"
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        filter:
+        - master_status
+      register: mysqlinfoPayload
+    - set_fact:
+          mysqlinfoPayload
+      when: inventory_hostname == 'docker-host1'
+
+    - name: Get master log
+      debug:
+        var: mysqlinfoPayload
+      when: inventory_hostname == 'docker-host1'
+
+    - name: Parsing key file
+      debug:
+        msg: "{{ mysqlinfoPayload.master_status.File }}"
+      when: inventory_hostname == 'docker-host2'
+
+    - name: Parsing key position
+      debug:
+        msg: "{{ mysqlinfoPayload.master_status.Position }}"
+      when: inventory_hostname == 'docker-host3'

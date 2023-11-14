@@ -1,0 +1,14 @@
+---
+    - name: Remove anonymous users
+      mysql_query:
+        login_user: "{{ mysql_root_user }}"
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        query: DELETE FROM mysql.user WHERE User=""
+
+    - name: Remove test database and access to it
+      mysql_query:
+          login_user: "{{ mysql_root_user }}"
+          login_password: "{{ mysql_root_password }}"
+          login_unix_socket: /var/run/mysqld/mysqld.sock
+          query: ["DROP DATABASE IF EXISTS test", "DELETE FROM mysql.db WHERE Db=\"test\" OR Db=\"test\\_%\""]

@@ -1,0 +1,16 @@
+---
+    - name: inject mysqld.cnf for 'docker-host1'
+      copy: src=host1/mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host1'
+      notify:
+        - restart mysql
+    - name: inject mysqld.cnf for 'docker-host2'
+      copy: src=host2/mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host2'
+      notify:
+        - restart mysql
+    - name: inject mysqld.cnf for 'docker-host3'
+      copy: src=host3/mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host3'
+      notify:
+        - restart mysql

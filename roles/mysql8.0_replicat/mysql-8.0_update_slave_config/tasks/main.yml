@@ -1,0 +1,11 @@
+---
+    - name: inject mysqld.cnf replica vars_files
+      copy: src=host2/mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host2'
+      notify:
+        - restart mysql
+    - name: inject mysqld.cnf replica vars_files
+      copy: src=host3/mysqld.cnf dest=/etc/mysql/mysql.conf.d/mysqld.cnf
+      when: inventory_hostname == 'docker-host3'
+      notify:
+        - restart mysql

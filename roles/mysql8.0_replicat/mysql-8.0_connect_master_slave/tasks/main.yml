@@ -1,0 +1,24 @@
+- name: Get mysql info
+  mysql_info:
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    filter:
+    - master_status
+  register: mysqlinfoPayload
+- set_fact:
+      mysqlinfoPayload
+  when: inventory_hostname == 'docker-host1'
+
+- name: configure MySQL slave process
+  mysql_replication:
+    master_host: "{{ mysql_replica_server_ip }}"
+    master_user: "{{ mysql_replicator_user }}"
+    master_password: "{{ mysql_replicator_password }}"
+    master_log_file: "{{ mysqlinfoPayload.master_status.File }}"
+    master_log_pos: "{{ mysqlinfoPayload.master_status.Position }}"
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    mode: changemaster
+  when: inventory_hostname == 'docker-host2' or inventory_hostname == 'docker-host3'

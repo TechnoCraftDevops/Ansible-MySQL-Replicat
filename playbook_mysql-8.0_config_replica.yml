@@ -1,0 +1,18 @@
+- hosts: all
+  become: true
+  gather_facts: no
+  vars_files: vars/main.yml
+
+  roles:
+    # - role: debug_get_master_log_file&pos
+    - role: os_update_upgrade
+    - role: mysql8.0_replicat/mysql-8.0_update_master_config
+    - role: mysql8.0/mysql-8.0_restart
+    - role: mysql8.0_replicat/mysql-8.0_create_replicator_user
+    - role: mysql8.0_replicat/mysql-8.0_create_database_master&slave
+    - role: mysql8.0_replicat/mysql-8.0_update_slave_config
+    - role: mysql8.0/mysql-8.0_restart
+    - role: mysql8.0_replicat/mysql-8.0_stop_replica
+    - role: mysql8.0_replicat/mysql-8.0_reset_replica
+    - role: mysql8.0_replicat/mysql-8.0_connect_master_slave
+    - role: mysql8.0_replicat/mysql-8.0_start_replica
